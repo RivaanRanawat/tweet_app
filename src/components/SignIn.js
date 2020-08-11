@@ -1,11 +1,66 @@
-import React from "react";
+import React, { useState } from "react";
+import { TextInput, Button, Icon } from "react-materialize";
+import signIn from "../api/signIn";
 
-import { TextInput } from "react-materialize";
-export default () => {
+export default props => {
+  const [data, setData] = useState({});
+  const [error, setError] = useState("");
+
+  const onChangeText = (key, value) => {
+    const newData = { ...data };
+    newData[key] = value;
+    setData(newData);
+  };
+
+  const onSubmit = async () => {
+    const result = signIn(data);
+    if (result === true) {
+      setError("");
+    } else if (result === false) {
+      setError("Email and Password Incorrect");
+    }
+  };
+
   return (
-    <div className="outerBox">
-      <TextInput label="Email" />
-      <TextInput label="Password" />
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center"
+      }}
+    >
+      <div className="outerBox w400">
+        <h4 style={{ marginBottom: 50 }}>Sign In</h4>
+        <TextInput
+          label="Email"
+          onChange={e => onChangeText("email", e.target.value)}
+        />
+        <TextInput
+          label="Password"
+          onChange={e => onChangeText("password", e.target.value)}
+          type="password"
+        />
+        <Button node="button" type="submit" waves="light" onClick={onSubmit}>
+          Sign In
+          <Icon right>send</Icon>
+        </Button>
+        <p>
+          Dont have an account?{" "}
+          <span
+            onClick={() => {
+              props.changeState("SU");
+            }}
+            style={{
+              marginLeft: 10,
+              fontWeight: "600",
+              color: "green",
+              cursor: "pointer"
+            }}
+          >
+            Sign Up
+          </span>
+        </p>
+        {error && <div style={{ color: "red" }}>{error}</div>}
+      </div>
     </div>
   );
 };
