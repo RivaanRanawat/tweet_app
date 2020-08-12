@@ -62,7 +62,7 @@ export default ({ userDetails }) => {
             >
               About me:
             </div>
-            <div style={{ fontSize: 12 }}>Not Editable.</div>
+            <div style={{ fontSize: 12 }}>{userDetails.bio}</div>
           </div>
         </div>
       )}

@@ -6,6 +6,7 @@ export default ({ changeToFalse, userDetails }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [image, setImage] = useState("");
+  const [bio, setBio] = useState("");
 
   const onSubmit = () => {
     const uid = firebaseApp.auth().currentUser.uid;
@@ -25,7 +26,8 @@ export default ({ changeToFalse, userDetails }) => {
               firstName,
               lastName,
               imageURL,
-              email: userDetails.email
+              email: userDetails.email,
+              bio
             };
 
             const result = editUserInfo(data);
@@ -44,7 +46,8 @@ export default ({ changeToFalse, userDetails }) => {
       const data = {
         uid,
         firstName,
-        lastName
+        lastName,
+        bio
       };
 
       const result = editUserInfo(data);
@@ -75,6 +78,11 @@ export default ({ changeToFalse, userDetails }) => {
         placeholder="Enter your last Name"
         value={lastName}
         onChange={event => setLastName(event.target.value)}
+      />
+      <input
+        placeholder="About You"
+        value={bio}
+        onChange={event => setBio(event.target.value)}
       />
       <button onClick={onSubmit}>OK</button>
     </div>

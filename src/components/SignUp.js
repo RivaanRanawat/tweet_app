@@ -7,7 +7,8 @@ export default props => {
     firstName: "",
     lastName: "",
     email: "",
-    password: ""
+    password: "",
+    bio: ""
   });
 
   const onSubmit = async () => {
@@ -49,6 +50,10 @@ export default props => {
         <TextInput
           label="Password"
           onChange={e => onChangeText("password", e.target.value)}
+        />
+        <TextInput
+          label="About You"
+          onChange={e => onChangeText("bio", e.target.value)}
         />
         <Button node="button" type="submit" waves="light" onClick={onSubmit}>
           Sign Up

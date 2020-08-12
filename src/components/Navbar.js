@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Navbar, Icon, NavItem, Container } from "react-materialize";
 import { firebaseApp } from "../firebase";
+import { Link } from "react-router-dom";
+import SingleUser from "./SingleUser";
 
 export default ({ stage }) => {
+  const [findUser, setFindUser] = useState(false);
+
   return (
     <div style={{ background: "royalblue" }}>
       <Container>
@@ -22,6 +26,16 @@ export default ({ stage }) => {
             preventScrolling: true
           }}
         >
+          <NavItem
+            onClick={event => {
+              setFindUser(true);
+            }}
+          >
+            <Link to="/users">Find Users</Link>
+          </NavItem>
+
+          {findUser === true ? <SingleUser /> : ""}
+
           {stage === "loggedIn" && (
             <NavItem
               onClick={event => {

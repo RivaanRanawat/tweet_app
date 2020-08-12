@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Row, Col } from "react-materialize";
 import Profile from "./Profile";
 import AddPost from "./AddPost";
-import SinglePost from "./SinglePost";
 import PostList from "./PostList";
 
 export default ({ userDetails }) => {
