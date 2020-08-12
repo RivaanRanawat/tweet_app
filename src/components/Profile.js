@@ -43,7 +43,7 @@ export default ({ userDetails }) => {
             <div style={{ marginLeft: 10, flex: 1 }}>
               {userDetails && userDetails.firstName
                 ? `${userDetails.firstName} ${userDetails.lastName}`
-                : "Loading"}
+                : ""}
             </div>
             <div
               style={{ cursor: "pointer" }}

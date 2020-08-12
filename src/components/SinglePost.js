@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Dropdown, Icon, Button } from "react-materialize";
+import { Dropdown, Icon, Button, Textarea } from "react-materialize";
 import { userRef } from "../firebase";
 import moment from "moment";
 import deletePost from "../api/deletePost";
+import editPost from "../api/editPost";
+import EditPost from "./EditPost";
 
 export default ({ details, myUID }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [imageURL, setImageURL] = useState("");
+  const [edit_post, setEdit_post] = useState(false);
 
   useEffect(() => {
     const getName = () => {
@@ -26,10 +29,16 @@ export default ({ details, myUID }) => {
     event.preventDefault();
     const result = deletePost(postKey);
     console.log(result);
+    setEdit_post(false);
+  };
+
+  const onPostEdit = (event, postKey, uid, content) => {
+    event.preventDefault();
+    setEdit_post(true);
   };
 
   return (
-    <div>
+    <div classNameee="whole">
       <div className="outerBox m10">
         <div>
           <div>
@@ -91,7 +100,18 @@ export default ({ details, myUID }) => {
                       </Button>
                     }
                   >
-                    <a href="" style={{ color: "black" }}>
+                    <a
+                      href=""
+                      style={{ color: "black" }}
+                      onClick={event => {
+                        onPostEdit(
+                          event,
+                          details.postKey,
+                          myUID,
+                          details.content
+                        );
+                      }}
+                    >
                       Edit
                     </a>
                     <a
@@ -108,7 +128,16 @@ export default ({ details, myUID }) => {
               )}
             </div>
           </div>
-          <div>{details && details.content ? details.content : ""}</div>
+          <div>
+            {edit_post === true ? (
+              <EditPost
+                keeyId={details.postKey}
+                previousContent={details.content}
+              />
+            ) : (
+              details.content
+            )}
+          </div>
         </div>
       </div>
     </div>

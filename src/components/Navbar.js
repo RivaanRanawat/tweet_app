@@ -1,7 +1,6 @@
 import React from "react";
 import { Navbar, Icon, NavItem, Container } from "react-materialize";
 import { firebaseApp } from "../firebase";
-import F from "../assets/f.png";
 
 export default ({ stage }) => {
   return (
@@ -9,11 +8,6 @@ export default ({ stage }) => {
       <Container>
         <Navbar
           alignLinks="right"
-          brand={
-            <a className="brand-logo" style={{ paddingTop: 8 }}>
-              <img src={F} alt="Logo" height="40px" />
-            </a>
-          }
           className="custom-navbar"
           menuIcon={<Icon>menu</Icon>}
           options={{
