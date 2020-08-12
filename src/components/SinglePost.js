@@ -7,10 +7,13 @@ import editPost from "../api/editPost";
 import EditPost from "./EditPost";
 
 export default ({ details, myUID }) => {
+  var likectr = 0;
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [edit_post, setEdit_post] = useState(false);
+  const [likePressed, setLikePressed] = useState(false);
+  const [likeNo, setLikeNo] = useState(likectr);
 
   useEffect(() => {
     const getName = () => {
@@ -35,6 +38,11 @@ export default ({ details, myUID }) => {
   const onPostEdit = (event, postKey, uid, content) => {
     event.preventDefault();
     setEdit_post(true);
+  };
+
+  const funlikePressed = () => {
+    setLikePressed(true);
+    setLikeNo(likectr++);
   };
 
   return (
@@ -128,7 +136,7 @@ export default ({ details, myUID }) => {
               )}
             </div>
           </div>
-          <div>
+          <div style={{ marginBottom: 10 }}>
             {edit_post === true ? (
               <EditPost
                 keeyId={details.postKey}
@@ -138,6 +146,19 @@ export default ({ details, myUID }) => {
               details.content
             )}
           </div>
+          {likePressed === true ? (
+            <div>
+              <span class="material-icons" onClick={funlikePressed}>
+                favorite_border
+              </span>
+              <span>{likeNo}</span>
+            </div>
+          ) : (
+            <div>
+              <span class="material-icons">favorite</span>
+              <span>{likeNo}</span>
+            </div>
+          )}
         </div>
       </div>
     </div>

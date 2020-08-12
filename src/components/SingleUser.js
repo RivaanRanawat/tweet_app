@@ -35,15 +35,15 @@ export default ({ details, myUID }) => {
     <Container>
       <Row>
         <Col s={12} m={12}>
-          <div className="outerBox m10">
+          <div className="outerBox1">
             <div>
               <div>
                 <div style={{ display: "flex", marginBottom: 10 }}>
                   <div>
                     <div
                       style={{
-                        width: 100,
-                        height: 100,
+                        width: 150,
+                        height: 150,
                         borderRadius: 8,
                         overflow: "hidden"
                       }}
@@ -59,17 +59,29 @@ export default ({ details, myUID }) => {
                       />
                     </div>
                   </div>
-                  <div style={{ marginLeft: 10, flex: 1 }}>
+                  <div
+                    style={{
+                      marginLeft: 10,
+                      flex: 1
+                    }}
+                  >
                     <div
                       style={{
                         color: "#385898",
                         fontWeight: 600,
-                        fontSize: 25
+                        fontSize: 30,
+                        paddingLeft: "auto",
+                        paddingRight: "auto",
+                        marginBottom: 0,
+                        marginLeft: "auto",
+                        marginRight: "auto"
                       }}
                     >
-                      {details.firstName} {details.lastName}
+                      <strong>
+                        {details.firstName} {details.lastName}
+                      </strong>
                     </div>
-                    <div style={{}}>
+                    <div style={{ fontFamily: "Lato", fontSize: 18 }}>
                       <p>{details.bio}</p>
                     </div>
                   </div>

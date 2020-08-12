@@ -30,12 +30,15 @@ export default ({ stage }) => {
             onClick={event => {
               setFindUser(true);
             }}
-          >
-            <Link to="/users">Find Users</Link>
-          </NavItem>
+          ></NavItem>
 
           {findUser === true ? <SingleUser /> : ""}
 
+          {stage === "loggedIn" && (
+            <NavItem>
+              <Link to="/users">Find Users</Link>
+            </NavItem>
+          )}
           {stage === "loggedIn" && (
             <NavItem
               onClick={event => {
