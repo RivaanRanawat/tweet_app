@@ -1,21 +1,37 @@
 import React, { useState, useEffect } from "react";
 import { Dropdown, Icon, Button, Textarea } from "react-materialize";
-import { userRef } from "../firebase";
+import { userRef, postRef } from "../firebase";
 import moment from "moment";
 import deletePost from "../api/deletePost";
 import editPost from "../api/editPost";
 import EditPost from "./EditPost";
+import { firebaseApp } from "../firebase";
 
 export default ({ details, myUID }) => {
-  var likectr = 0;
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [edit_post, setEdit_post] = useState(false);
   const [likePressed, setLikePressed] = useState(false);
-  const [likeNo, setLikeNo] = useState(likectr);
+  const [likeNumber, setLikeNumber] = useState(0);
 
+  const uid = firebaseApp.auth().currentUser.uid;
+  var arr;
   useEffect(() => {
+    const getLikes = async () => {
+      postRef
+        .child(details.postKey)
+        .child("likes")
+        .once("value", snap => {
+          var arr = [];
+          snap.forEach(liket => {
+            arr.push({
+              ...liket.val()
+            });
+          });
+          setLikeNumber(arr.length);
+        });
+    };
     const getName = () => {
       userRef.child(details.createdBy).once("value", snap => {
         setFirstName(snap.val()["firstName"]);
@@ -23,7 +39,9 @@ export default ({ details, myUID }) => {
         setImageURL(snap.val()["imageURL"]);
       });
     };
+
     if (details && details.createdBy) {
+      getLikes();
       getName();
     }
   }, [details]);
@@ -41,12 +59,51 @@ export default ({ details, myUID }) => {
   };
 
   const funlikePressed = () => {
-    setLikePressed(true);
-    setLikeNo(likectr++);
+    if (likePressed === true) {
+      postRef
+        .child(details.postKey)
+        .once("value")
+        .then(function(snapshot) {
+          postRef
+            .child(details.postKey)
+            .child("likes")
+            .child(uid)
+            .remove()
+            .then(function(snap) {
+              console.log("Success");
+            });
+        });
+      setLikePressed(false);
+    } else {
+      postRef
+        .child(details.postKey)
+        .once("value")
+        .then(function(snapshot) {
+          postRef
+            .child(details.postKey)
+            .child("likes")
+            .child(uid)
+            .push()
+            .set({
+              uid
+            });
+        });
+      setLikePressed(true);
+    }
+  };
+
+  const getLikes = async () => {
+    postRef.child("likes").on("value", snap => {
+      var ctr = 0;
+      snap.forEach(like => {
+        ++ctr;
+        console.log(ctr);
+      });
+    });
   };
 
   return (
-    <div classNameee="whole">
+    <div className="whole">
       <div className="outerBox m10">
         <div>
           <div>
@@ -54,8 +111,8 @@ export default ({ details, myUID }) => {
               <div>
                 <div
                   style={{
-                    width: 40,
-                    height: 40,
+                    width: 50,
+                    height: 50,
                     borderRadius: 30,
                     overflow: "hidden"
                   }}
@@ -71,11 +128,12 @@ export default ({ details, myUID }) => {
                   />
                 </div>
               </div>
-              <div style={{ marginLeft: 10, flex: 1 }}>
+              <div style={{ marginLeft: "10px", flex: 1 }}>
                 <div
                   style={{
                     color: "#385898",
-                    fontWeight: 600
+                    fontWeight: 600,
+                    cursor: "default"
                   }}
                 >
                   {firstName} {lastName}
@@ -141,22 +199,45 @@ export default ({ details, myUID }) => {
               <EditPost
                 keeyId={details.postKey}
                 previousContent={details.content}
+                likee={arr}
               />
             ) : (
               details.content
             )}
           </div>
           {likePressed === true ? (
-            <div>
-              <span class="material-icons" onClick={funlikePressed}>
-                favorite_border
+            <div
+              style={{
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center"
+              }}
+            >
+              <span
+                className="material-icons"
+                onClick={funlikePressed}
+                style={{ color: "red" }}
+              >
+                favorite
               </span>
-              <span>{likeNo}</span>
+              <span>{likeNumber}</span>
             </div>
           ) : (
-            <div>
-              <span class="material-icons">favorite</span>
-              <span>{likeNo}</span>
+            <div
+              style={{
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center"
+              }}
+            >
+              <span
+                className="material-icons"
+                onClick={funlikePressed}
+                style={{ color: "red" }}
+              >
+                favorite_border
+              </span>
+              <span style={{ marginLeft: 10 }}>{likeNumber}</span>
             </div>
           )}
         </div>

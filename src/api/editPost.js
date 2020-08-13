@@ -1,8 +1,7 @@
 import { postRef } from "../firebase";
 
-export default (postKey, uid, content) => {
+export default (postKey, uid, content, likes) => {
   try {
-    console.log(postKey);
     postRef.child(postKey).set({
       createdBy: uid,
       content: content,

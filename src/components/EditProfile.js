@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { firebaseApp, storageRef } from "../firebase";
 import editUserInfo from "../api/editUserInfo";
+import { Textarea } from "react-materialize";
 
 export default ({ changeToFalse, userDetails }) => {
   const [firstName, setFirstName] = useState("");
@@ -64,7 +65,11 @@ export default ({ changeToFalse, userDetails }) => {
 
   return (
     <div>
-      <div onClick={() => changeToFalse()}>Go Back</div>
+      <div onClick={() => changeToFalse()}>
+        <span style={{ cursor: "pointer" }} class="material-icons">
+          navigate_before
+        </span>
+      </div>
       {image && (
         <img src={URL.createObjectURL(image)} alt="profile pic" height="40px" />
       )}

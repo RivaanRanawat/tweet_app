@@ -3,8 +3,7 @@ import { Textarea, Button, Row } from "react-materialize";
 import { firebaseApp } from "../firebase";
 import editPost from "../api/editPost";
 
-export default ({ keeyId, previousContent }) => {
-  console.log(keeyId);
+export default ({ keeyId, previousContent, likee }) => {
   const [content, setContent] = useState("");
   const [editNeeded, setEditNeeded] = useState(true);
 
@@ -15,11 +14,8 @@ export default ({ keeyId, previousContent }) => {
     if (content.length > 120) {
       return;
     }
-    console.log("yes");
     const uid = firebaseApp.auth().currentUser.uid;
-    console.log("ok");
-    const output = editPost(keeyId, uid, content);
-    console.log("noo");
+    const output = editPost(keeyId, uid, content, likee);
     if (output === true) {
       setContent("");
       console.log("Post Edited");

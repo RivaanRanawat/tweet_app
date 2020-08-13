@@ -3,7 +3,9 @@ import { Textarea, Button, Row } from "react-materialize";
 import { firebaseApp } from "../firebase";
 import addPost from "../api/addPost";
 export default () => {
+  const uid = firebaseApp.auth().currentUser.uid;
   const [content, setContent] = useState("");
+  var likes = [];
 
   const addAPost = () => {
     if (!content) {
@@ -13,8 +15,7 @@ export default () => {
       return;
     }
 
-    const uid = firebaseApp.auth().currentUser.uid;
-    const output = addPost(uid, content);
+    const output = addPost(uid, content, likes);
     if (output === true) {
       setContent("");
       console.log("Post added");
