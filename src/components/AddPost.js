@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Textarea, Button, Row } from "react-materialize";
+import { Textarea, Button, Row, Icon } from "react-materialize";
 import { firebaseApp } from "../firebase";
 import addPost from "../api/addPost";
 export default () => {
   const uid = firebaseApp.auth().currentUser.uid;
   const [content, setContent] = useState("");
   var likes = [];
+  var comments = [];
 
   const addAPost = () => {
     if (!content) {
@@ -15,7 +16,7 @@ export default () => {
       return;
     }
 
-    const output = addPost(uid, content, likes);
+    const output = addPost(uid, content, likes, comments);
     if (output === true) {
       setContent("");
       console.log("Post added");
@@ -40,7 +41,13 @@ export default () => {
             onChange={event => setContent(event.target.value)}
           />
         </Row>
-        <div style={{ height: 0 }}>
+        <div
+          style={{
+            height: 0,
+            display: "flex",
+            alignItems: "center"
+          }}
+        >
           <Button
             small
             waves="light"

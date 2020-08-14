@@ -1,12 +1,13 @@
 import { postRef } from "../firebase";
 
-export default (uid, content, likes) => {
+export default (uid, content, likes, commments) => {
   try {
     postRef.push({
       createdBy: uid,
       content,
       createdAt: new Date().toLocaleString(),
-      likes: []
+      likes: [],
+      comments: []
     });
     return true;
   } catch (err) {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, setState } from "react";
 import { userRef, firebaseApp } from "../firebase";
 import SingleUser from "./SingleUser";
+import { Autocomplete, Icon } from "react-materialize";
 
 export default () => {
   const [users, setUsers] = useState([]);

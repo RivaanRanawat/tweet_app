@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { firebaseApp, storageRef } from "../firebase";
 import editUserInfo from "../api/editUserInfo";
-import { Textarea } from "react-materialize";
+import { Button } from "react-materialize";
 
 export default ({ changeToFalse, userDetails }) => {
   const [firstName, setFirstName] = useState("");
@@ -11,7 +11,7 @@ export default ({ changeToFalse, userDetails }) => {
 
   const onSubmit = () => {
     const uid = firebaseApp.auth().currentUser.uid;
-
+    //hi
     if (image) {
       var uploadTask = storageRef.ref(`image/${image.name}`).put(image);
       uploadTask.on(
@@ -89,7 +89,12 @@ export default ({ changeToFalse, userDetails }) => {
         value={bio}
         onChange={event => setBio(event.target.value)}
       />
-      <button onClick={onSubmit}>OK</button>
+      <Button
+        style={{ justifyContent: "center", backgroundColor: "royalblue" }}
+        onClick={onSubmit}
+      >
+        OK
+      </Button>
     </div>
   );
 };

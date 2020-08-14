@@ -5,10 +5,11 @@ import { Link } from "react-router-dom";
 import SingleUser from "./SingleUser";
 
 export default ({ stage }) => {
-  const [findUser, setFindUser] = useState(false);
-
+  function reload() {
+    window.loaction.reload();
+  }
   return (
-    <div style={{ background: "royalblue" }}>
+    <div className="navvvvv">
       <Container>
         <Navbar
           alignLinks="right"
@@ -26,16 +27,8 @@ export default ({ stage }) => {
             preventScrolling: true
           }}
         >
-          <NavItem
-            onClick={event => {
-              setFindUser(true);
-            }}
-          ></NavItem>
-
-          {findUser === true ? <SingleUser /> : ""}
-
           {stage === "loggedIn" && (
-            <NavItem>
+            <NavItem onClick={{ reload }}>
               <Link to="/users">Find Users</Link>
             </NavItem>
           )}

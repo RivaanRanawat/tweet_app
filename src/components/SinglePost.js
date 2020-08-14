@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Dropdown, Icon, Button, Textarea } from "react-materialize";
+import { Dropdown, Icon, Button, Col, Textarea } from "react-materialize";
 import { userRef, postRef } from "../firebase";
 import moment from "moment";
 import deletePost from "../api/deletePost";
-import editPost from "../api/editPost";
 import EditPost from "./EditPost";
+import ProfilePage from "./ProfilePage";
 import { firebaseApp } from "../firebase";
 
 export default ({ details, myUID }) => {
@@ -13,10 +13,14 @@ export default ({ details, myUID }) => {
   const [imageURL, setImageURL] = useState("");
   const [edit_post, setEdit_post] = useState(false);
   const [likePressed, setLikePressed] = useState(false);
+  const [profileYes, setProfileYes] = useState(false);
   const [likeNumber, setLikeNumber] = useState(0);
+  const [isComment, setIsComment] = useState(false);
+  const [commentsText, setcommentsText] = useState("");
+  const [showComments, setShowComments] = useState([]);
 
   const uid = firebaseApp.auth().currentUser.uid;
-  var arr;
+  var arr = [];
   useEffect(() => {
     const getLikes = async () => {
       postRef
@@ -30,6 +34,16 @@ export default ({ details, myUID }) => {
             });
           });
           setLikeNumber(arr.length);
+        });
+    };
+
+    const getComments = async () => {
+      postRef
+        .child(details.postKey)
+        .child("comments")
+        .child(details.createdBy)
+        .once("value", snap => {
+          setShowComments(snap.value["commentsText"]);
         });
     };
     const getName = () => {
@@ -57,6 +71,24 @@ export default ({ details, myUID }) => {
     event.preventDefault();
     setEdit_post(true);
   };
+
+  function funCommentPressed() {
+    console.log("hi from comment");
+    postRef
+      .child(details.postKey)
+      .once("value")
+      .then(function(snapshot) {
+        postRef
+          .child(details.postKey)
+          .child("comments")
+          .child(uid)
+          .set({
+            commentsText,
+            uid
+          });
+      });
+    setcommentsText("");
+  }
 
   const funlikePressed = () => {
     if (likePressed === true) {
@@ -92,15 +124,13 @@ export default ({ details, myUID }) => {
     }
   };
 
-  const getLikes = async () => {
-    postRef.child("likes").on("value", snap => {
-      var ctr = 0;
-      snap.forEach(like => {
-        ++ctr;
-        console.log(ctr);
-      });
-    });
-  };
+  function onComment() {
+    setIsComment(true);
+  }
+
+  function onNameClick() {
+    setProfileYes(true);
+  }
 
   return (
     <div className="whole">
@@ -213,14 +243,21 @@ export default ({ details, myUID }) => {
                 alignItems: "center"
               }}
             >
-              <span
-                className="material-icons"
-                onClick={funlikePressed}
-                style={{ color: "red" }}
-              >
-                favorite
-              </span>
-              <span>{likeNumber}</span>
+              <Col s={4} m={4}>
+                <span
+                  className="material-icons"
+                  onClick={funlikePressed}
+                  style={{ color: "red" }}
+                >
+                  favorite
+                </span>
+              </Col>
+              <Col s={4} m={4}>
+                <span style={{ marginLeft: 5 }}>{likeNumber}</span>
+              </Col>
+              <Col s={4} m={4}>
+                <Icon style={{ margin: "auto" }}>comment</Icon>
+              </Col>
             </div>
           ) : (
             <div
@@ -230,15 +267,39 @@ export default ({ details, myUID }) => {
                 alignItems: "center"
               }}
             >
-              <span
-                className="material-icons"
-                onClick={funlikePressed}
-                style={{ color: "red" }}
-              >
-                favorite_border
-              </span>
-              <span style={{ marginLeft: 10 }}>{likeNumber}</span>
+              <Col s={4} m={4}>
+                <span
+                  className="material-icons"
+                  onClick={funlikePressed}
+                  style={{ color: "red" }}
+                >
+                  favorite_border
+                </span>
+              </Col>
+              <Col s={4} m={4}>
+                <span style={{ marginLeft: 5 }}>{likeNumber}</span>
+              </Col>
+              <Col s={4} m={4}>
+                <div onClick={onComment}>
+                  <Icon style={{ margin: "auto" }}>comment</Icon>
+                </div>
+              </Col>
             </div>
+          )}
+          {isComment === true ? (
+            <div>
+              <Textarea
+                value={commentsText}
+                s={12}
+                className="custom-textArea"
+                placeholder="Please write here..."
+                data-length={120}
+                onChange={event => setcommentsText(event.target.value)}
+              />
+              <Button onClick={funCommentPressed}>OK</Button>
+            </div>
+          ) : (
+            ""
           )}
         </div>
       </div>

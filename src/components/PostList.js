@@ -16,6 +16,7 @@ export default () => {
             postKey: singlePost.key
           });
         });
+
         const uid = firebaseApp.auth().currentUser.uid;
         setMyUID(uid);
         fetchedPosts.reverse();

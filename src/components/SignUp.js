@@ -16,7 +16,7 @@ export default props => {
     if (result === true) {
       console.log("SIGN UP SUCCESSFUL");
     } else if (result === false) {
-      console.log("Sign Up FAILED");
+      alert("Sign Up Failed");
     }
   };
 

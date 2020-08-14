@@ -6,7 +6,8 @@ import editPost from "../api/editPost";
 export default ({ keeyId, previousContent, likee }) => {
   const [content, setContent] = useState("");
   const [editNeeded, setEditNeeded] = useState(true);
-
+  const [mounted, setMounted] = useState(false);
+  // hey
   const editAPost = () => {
     if (!content) {
       return;
@@ -32,11 +33,14 @@ export default ({ keeyId, previousContent, likee }) => {
     window.history.back();
     window.location.reload();
   }
+  function goBack1() {
+    window.location.reload();
+  }
 
   return (
     <div>
       {editNeeded === false ? (
-        goBack()
+        goBack1()
       ) : (
         <div>
           <h6 style={{ fontWeight: 500 }}>Changed Your Mind?</h6>
